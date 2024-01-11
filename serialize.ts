@@ -7,18 +7,15 @@ const splitTo9Bit = (str: string): string[] => {
   return splitted ? splitted : [""];
 };
 
-const zip = (a1: any[], a2: any[]): [any, any][] =>
-  Array.from({ length: Math.max(a1.length, a2.length) }, (_, i) => [
-    a1[i],
-    a2[i],
-  ]);
-
 const ascii7Decoder = (encoded: string) => {
   let decoded = "";
+
+  // Enlarge input string length to be divisible by 7
   const rem = encoded.length % 7;
   for (let i = rem; i < 7; i++) {
     encoded = "0" + encoded;
   }
+
   for (let i = 0; i < encoded.length; i += 7) {
     // Extract 7 bits at a time and convert to decimal ASCII code
     const sevenBits = encoded.substring(i, i + 7);
@@ -35,6 +32,9 @@ const ascii7Encoder = (text: string) => {
     const binaryCode = asciiCode.toString(2).padStart(7, "0");
     encoded += binaryCode;
   }
+
+  // As string after decoding to ASCII will be same length or longer than original -
+  // - trim leading zeros so string length is again divisible by 9
   const rem = encoded.length % 9;
   return encoded.substring(rem);
 };
